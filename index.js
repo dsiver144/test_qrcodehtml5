@@ -42,6 +42,7 @@ docReady(function() {
         Html5Qrcode.getCameras().then(devices => {
             if (devices && devices.length) {
                 var cameraId = devices[0].id;
+                localStorage.setItem('cameraId', cameraId);
                 startScan(cameraId);
             }
         }).catch(err => {
