@@ -41,8 +41,10 @@ docReady(function() {
         // This method will trigger user permissions
         Html5Qrcode.getCameras().then(devices => {
             if (devices && devices.length) {
-                var cameraId = devices[1].id;
+                var cameraId = devices[0].id;
                 localStorage.setItem('cameraId', cameraId);
+                alert(devices);
+                alert(cameraId);
                 startScan(cameraId);
             }
         }).catch(err => {
