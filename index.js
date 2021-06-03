@@ -37,7 +37,8 @@ docReady(function() {
             },
             errorMessage => {
                 // parse error, ignore it.
-                result.innerHTML = errorMessage;
+                alert(errorMessage);
+                //result.innerHTML = errorMessage;
             })
             .catch(err => {
             // Start failed, handle it.
