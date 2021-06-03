@@ -8,10 +8,19 @@ function docReady(fn) {
     }
 }
 docReady(function() {
-	function onScanSuccess(qrCodeMessage) {
-		console.log(qrCodeMessage);
-	}
-	let html5QrcodeScanner = new Html5QrcodeScanner(
-		"scanner", { fps: 10, qrbox: 250 });
-	html5QrcodeScanner.render(onScanSuccess, _ => { /** ignore error */ });
+	const html5QrCode = new Html5Qrcode("reader");
+    const qrCodeSuccessCallback = message => { /* handle success */ }
+    const config = { fps: 10, qrbox: 250 };
+
+    // If you want to prefer front camera
+    html5QrCode.start({ facingMode: "user" }, config, qrCodeSuccessCallback);
+
+    // If you want to prefer back camera
+    html5QrCode.start({ facingMode: "environment" }, config, qrCodeSuccessCallback);
+
+    // Select front camera or fail with `OverconstrainedError`.
+    html5QrCode.start({ facingMode: { exact: "user"} }, config, qrCodeSuccessCallback);
+
+    // Select back camera or fail with `OverconstrainedError`.
+    html5QrCode.start({ facingMode: { exact: "environment"} }, config, qrCodeSuccessCallback);
 });
