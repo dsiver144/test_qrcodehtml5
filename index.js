@@ -9,47 +9,46 @@ function docReady(fn) {
 }
 docReady(function() {
     const result = document.getElementById("result");
-    const cameraIdNode = document.getElementById("camera");
-    const qrCodeSuccessCallback = message => { /* handle success */ }
 
-    // This method will trigger user permissions
-    Html5Qrcode.getCameras().then(devices => {
-        /**
-         * devices would be an array of objects of type:
-         * { id: "id", label: "label" }
-         */
-        if (devices && devices.length) {
-            var cameraId = devices[0].id;
-            alert(cameraId);
-            // .. use this to start scanning.
-            // { facingMode: { exact: "user"}, deviceId: {exact: cameraId}}, 
-            const html5QrCode = new Html5Qrcode(/* element id */ "reader");
-            html5QrCode.start(
-            { facingMode: "environment"}, 
-            {
-                fps: 10,    // Optional frame per seconds for qr code scanning
-                qrbox: 300  // Optional if you want bounded box UI
-            },
-            qrCodeMessage => {
-                // do something when code is read
-                result.innerHTML = qrCodeMessage;
-                //alert(qrCodeMessage);
-            },
-            errorMessage => {
-                // parse error, ignore it.
-                result.innerHTML = errorMessage;
-                //alert(errorMessage);
-                //result.innerHTML = errorMessage;
-            })
-            .catch(err => {
-            // Start failed, handle it.
+    var savedCameraId = localStorage.getItem('cameraId');
+    function startScan(cameraId) {
+        const html5QrCode = new Html5Qrcode(/* element id */ "reader");
+        html5QrCode.start(
+        { facingMode: "environment", deviceId: cameraId}, 
+        {
+            fps: 10,    // Optional frame per seconds for qr code scanning
+            qrbox: 250  // Optional if you want bounded box UI
+        },
+        qrCodeMessage => {
+            // do something when code is read
+            result.innerHTML = qrCodeMessage;
+            //alert(qrCodeMessage);
+        },
+        errorMessage => {
+            // parse error, ignore it.
+            result.innerHTML = errorMessage;
+            //alert(errorMessage);
+            //result.innerHTML = errorMessage;
+        })
+        .catch(err => {
+        // Start failed, handle it.
             result.innerHTML = err;
-            });
-
-        }
-    }).catch(err => {
-        // handle err
-    });
+        });
+    }
+    if (savedCameraId) {
+        startScan(savedCameraId);
+    } else {
+        // This method will trigger user permissions
+        Html5Qrcode.getCameras().then(devices => {
+            if (devices && devices.length) {
+                var cameraId = devices[0].id;
+                startScan(cameraId);
+            }
+        }).catch(err => {
+            result.innerHTML = err;
+        });
+    }
+    
 
 });
 
