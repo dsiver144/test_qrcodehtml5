@@ -23,9 +23,10 @@ docReady(function() {
             var cameraId = devices[0].id;
             cameraIdNode.innerHTML = cameraId;
             // .. use this to start scanning.
+            // { facingMode: { exact: "user"}, deviceId: {exact: cameraId}}, 
             const html5QrCode = new Html5Qrcode(/* element id */ "reader");
             html5QrCode.start(
-            { facingMode: { exact: "environment"}, deviceId: {exact: cameraId}}, 
+            { facingMode: { exact: "user"}}, 
             {
                 fps: 15,    // Optional frame per seconds for qr code scanning
                 qrbox: 250  // Optional if you want bounded box UI
