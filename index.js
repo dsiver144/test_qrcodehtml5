@@ -11,7 +11,6 @@ docReady(function() {
     const result = document.getElementById("result");
     const cameraIdNode = document.getElementById("camera");
     const qrCodeSuccessCallback = message => { /* handle success */ }
-    const config = { fps: 10, qrbox: 250 };
 
     // This method will trigger user permissions
     Html5Qrcode.getCameras().then(devices => {
@@ -28,8 +27,8 @@ docReady(function() {
             html5QrCode.start(
             { facingMode: "environment"}, 
             {
-                fps: 15,    // Optional frame per seconds for qr code scanning
-                qrbox: 250  // Optional if you want bounded box UI
+                fps: 10,    // Optional frame per seconds for qr code scanning
+                qrbox: 300  // Optional if you want bounded box UI
             },
             qrCodeMessage => {
                 // do something when code is read
