@@ -9,7 +9,6 @@ function docReady(fn) {
 }
 docReady(function() {
     const result = document.getElementById("result");
-	const html5QrCode = new Html5Qrcode("reader");
     const qrCodeSuccessCallback = message => { /* handle success */ }
     const config = { fps: 10, qrbox: 250 };
 
@@ -24,9 +23,9 @@ docReady(function() {
             // .. use this to start scanning.
             const html5QrCode = new Html5Qrcode(/* element id */ "reader");
             html5QrCode.start(
-            cameraId, 
+            { facingMode: "environment", deviceId: {exact: cameraId}}, 
             {
-                fps: 10,    // Optional frame per seconds for qr code scanning
+                fps: 15,    // Optional frame per seconds for qr code scanning
                 qrbox: 250  // Optional if you want bounded box UI
             },
             qrCodeMessage => {
