@@ -33,11 +33,13 @@ docReady(function() {
             },
             qrCodeMessage => {
                 // do something when code is read
-                alert(qrCodeMessage);
+                result.innerHTML = qrCodeMessage;
+                //alert(qrCodeMessage);
             },
             errorMessage => {
                 // parse error, ignore it.
-                alert(errorMessage);
+                result.innerHTML = errorMessage;
+                //alert(errorMessage);
                 //result.innerHTML = errorMessage;
             })
             .catch(err => {
