@@ -14,7 +14,7 @@ docReady(function() {
     function startScan(cameraId) {
         const html5QrCode = new Html5Qrcode(/* element id */ "reader");
         html5QrCode.start(
-        { facingMode: "environment", deviceId: { exact: cameraId}}, 
+        {deviceId: { exact: cameraId}}, // facingMode: "environment", 
         {
             fps: 10,    // Optional frame per seconds for qr code scanning
             qrbox: 250  // Optional if you want bounded box UI
@@ -41,7 +41,7 @@ docReady(function() {
         // This method will trigger user permissions
         Html5Qrcode.getCameras().then(devices => {
             if (devices && devices.length) {
-                var cameraId = devices[0].id;
+                var cameraId = devices[1].id;
                 localStorage.setItem('cameraId', cameraId);
                 startScan(cameraId);
             }
