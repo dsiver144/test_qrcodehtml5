@@ -8,19 +8,44 @@ function docReady(fn) {
     }
 }
 docReady(function() {
+    const result = document.getElementById("result");
 	const html5QrCode = new Html5Qrcode("reader");
     const qrCodeSuccessCallback = message => { /* handle success */ }
     const config = { fps: 10, qrbox: 250 };
 
-    // If you want to prefer front camera
-    html5QrCode.start({ facingMode: "user" }, config, qrCodeSuccessCallback);
+    // This method will trigger user permissions
+    Html5Qrcode.getCameras().then(devices => {
+        /**
+         * devices would be an array of objects of type:
+         * { id: "id", label: "label" }
+         */
+        if (devices && devices.length) {
+            var cameraId = devices[0].id;
+            // .. use this to start scanning.
+            const html5QrCode = new Html5Qrcode(/* element id */ "reader");
+            html5QrCode.start(
+            cameraId, 
+            {
+                fps: 10,    // Optional frame per seconds for qr code scanning
+                qrbox: 250  // Optional if you want bounded box UI
+            },
+            qrCodeMessage => {
+                // do something when code is read
+                result.innerHTML = qrCodeMessage;
+            },
+            errorMessage => {
+                // parse error, ignore it.
+                result.innerHTML = errorMessage;
+            })
+            .catch(err => {
+            // Start failed, handle it.
+            result.innerHTML = err;
+            });
 
-    // If you want to prefer back camera
-    html5QrCode.start({ facingMode: "environment" }, config, qrCodeSuccessCallback);
+        }
+    }).catch(err => {
+        // handle err
+    });
 
-    // Select front camera or fail with `OverconstrainedError`.
-    html5QrCode.start({ facingMode: { exact: "user"} }, config, qrCodeSuccessCallback);
-
-    // Select back camera or fail with `OverconstrainedError`.
-    html5QrCode.start({ facingMode: { exact: "environment"} }, config, qrCodeSuccessCallback);
 });
+
